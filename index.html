@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menú Cafetería</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">  <style>
+    :root { --primary:#7FAFA8; --bg:#f7f7f7; --card:#fff; --accent:#F4BFA6; --text:#5A5A5A; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Poppins,sans-serif;background:var(--bg);color:var(--text)}
+
+    /* HEADER */
+    .header{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, #7FAFA8, #6fa39c);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:5px;
+      transition: all 0.3s ease;
+      box-shadow:0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .header.small{
+      padding:10px;
+    }
+
+    .logo{
+      width:80px;
+      max-width:80%;
+      height: 80px;
+      display:block;
+      animation: fadeIn 1s ease;
+      transition: all 0.3s ease;
+    }
+
+    .header.small .logo{
+      width:50px;
+      height:50px;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(-10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .container{max-width:1100px;margin:auto;padding:20px}
+
+    .filters{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+    .filters button{padding:8px 15px;border:none;border-radius:20px;background:#ccc;cursor:pointer}
+    .filters button.active{background:var(--primary);color:white}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+
+    .card{background:var(--card);border-radius:15px;overflow:hidden;box-shadow:0 4px 10px rgba(127,175,168,0.25);transition:.2s}
+    .card:hover{transform:translateY(-5px);box-shadow:0 6px 15px rgba(127,175,168,0.4)}
+
+    .card img{width:100%;height:150px;object-fit:cover}
+
+    .card-content{text-align:center;padding:10px}
+    .desc{font-size:13px;color:#777;margin:5px 0}
+    .price{color:var(--accent);font-weight:600}
+
+    .whatsapp{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      background:var(--primary);
+      color:white;
+      padding:15px;
+      border-radius:50%;
+      font-size:20px;
+      text-decoration:none;
+      box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    }
+  </style></head>
+<body><header class="header" id="header">
+  <img src="logo.png" alt="Dulce Beba" class="logo">
+</header><div class="container">  <div class="filters">
+  <button onclick="filterMenu('all')" class="active">🩵Todo</button>
+    <button onclick="filterMenu('bebidas_calientes')">☕Bebidas calientes</button>
+    <button onclick="filterMenu('bebidas_frias')">🍹Bebidas frías</button>
+    <button onclick="filterMenu('dulces')">🍪Dulce</button>
+ <button onclick="filterMenu('salados')">🥪Salado</button>
+<button onclick="filterMenu('tortas')">🍰Tortas</button>
+  <button onclick="filterMenu('postres')">🍮Postres</button>
+<button onclick="filterMenu('meriendas')">🧁Meriendas</button>
+<button onclick="filterMenu('eventos')">⭐Eventos</button>
+</div>  <div class="grid" id="menu"></div></div><a class="whatsapp" href="https://wa.me/598095662193" target="_blank">💬</a>
+
+<script>
+
+//const SHEET_URL = "PEGAR_URL_AQUI";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1l6JSlV5Lr-cE-OVh7eF6H0aFtGACmArcG6g9DqTddw8/export?format=csv";
+let data = [];
+
+async function loadData(){
+  try{
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+
+    //const rows = text.split("\n").slice(1);
+    const rows = text.split("\r\n");
+    data = rows.map(row => {
+      const [id,name,description,price,img,cat] = row.split(",");
+      return { id, name, description, price, img, cat };
+    }).filter(i=>i.id);
+
+    render();
+  }catch(e){
+    console.error("Error cargando Google Sheets", e);
+  }
+}
+
+function render(filter='all'){
+  const menu=document.getElementById('menu')
+  menu.innerHTML=''
+
+  data.filter(item=> filter==='all'||item.cat===filter)
+      .forEach(item=>{
+        menu.innerHTML+=`
+          <div class="card">
+            <img src="${item.img}">
+            <div class="card-content">
+              <h3>${item.name}</h3>
+              <p class="desc">${item.description || ''}</p>
+              <p class="price">$${item.price}</p>
+            </div>
+          </div>`
+      })
+}
+
+function filterMenu(cat){
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'))
+  event.target.classList.add('active')
+  render(cat)
+}
+
+// Header shrink on scroll
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('header');
+  if(window.scrollY > 50){
+    header.classList.add('small');
+  } else {
+    header.classList.remove('small');
+  }
+});
+
+loadData();
+
+</script></body>
+</html>
