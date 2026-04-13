@@ -11,7 +11,13 @@
   <style>
     :root { --primary:#7FAFA8; --bg:#f7f7f7; --card:#fff; --accent:#F4BFA6; --text:#5A5A5A; }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Poppins,sans-serif;background:var(--bg);color:var(--text)}
+
+    body{
+      font-family:Poppins,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:17px;
+    }
 
     /* HEADER */
     .header{
@@ -22,7 +28,7 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      padding:5px;
+      padding:8px;
       transition: all 0.3s ease;
       box-shadow:0 2px 10px rgba(0,0,0,0.15);
     }
@@ -30,11 +36,8 @@
     .header.small{ padding:10px; }
 
     .logo{
-      width:80px;
-      max-width:80%;
-      height: 80px;
-      display:block;
-      animation: fadeIn 1s ease;
+      width:70px;
+      height:70px;
       transition: all 0.3s ease;
     }
 
@@ -43,27 +46,76 @@
       height:50px;
     }
 
-    @keyframes fadeIn{
-      from{opacity:0; transform:translateY(-10px)}
-      to{opacity:1; transform:translateY(0)}
-    }
-
     .container{max-width:1100px;margin:auto;padding:20px}
 
-    .filters{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-    .filters button{padding:8px 15px;border:none;border-radius:20px;background:#ccc;cursor:pointer}
-    .filters button.active{background:var(--primary);color:white}
+    /* FILTROS */
+    .filters{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .filters button{
+      padding:12px 18px;
+      border:none;
+      border-radius:20px;
+      background:#ccc;
+      cursor:pointer;
+      font-size:15px;
+    }
 
-    .card{background:var(--card);border-radius:15px;overflow:hidden;box-shadow:0 4px 10px rgba(127,175,168,0.25);transition:.2s}
-    .card:hover{transform:translateY(-5px);box-shadow:0 6px 15px rgba(127,175,168,0.4)}
+    .filters button.active{
+      background:var(--primary);
+      color:white;
+    }
 
-    .card img{width:100%;height:150px;object-fit:cover}
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
 
-    .card-content{text-align:center;padding:10px}
-    .desc{font-size:13px;color:#777;margin:5px 0}
-    .price{color:var(--accent);font-weight:600}
+    .card{
+      background:var(--card);
+      border-radius:15px;
+      overflow:hidden;
+      box-shadow:0 4px 10px rgba(127,175,168,0.25);
+      transition:.2s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+    }
+
+    .card-content{
+      text-align:center;
+      padding:12px;
+    }
+
+    .card-content h3{
+      font-size:18px;
+    }
+
+    .desc{
+      font-size:14px;
+      color:#777;
+      margin:5px 0;
+    }
+
+    .price{
+      color:var(--accent);
+      font-weight:700;
+      font-size:20px;
+    }
 
     /* BOTONES FLOTANTES */
     .floating-buttons{
@@ -77,8 +129,8 @@
     }
 
     .fab{
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       display:flex;
       align-items:center;
@@ -89,7 +141,11 @@
       transition: all 0.3s ease;
     }
 
-    /* BOTÓN SUBIR */
+    .fab:hover{
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    /* SUBIR */
     .scroll-top{
       background: linear-gradient(135deg, #7FAFA8, #6fa39c);
       opacity: 0;
@@ -109,11 +165,6 @@
       color:white;
       font-size:20px;
       text-decoration:none;
-    }
-
-    /* HOVER */
-    .fab:hover{
-      transform: translateY(-4px) scale(1.05);
     }
 
   </style>
@@ -154,7 +205,7 @@
 
   <!-- WHATSAPP -->
   <a class="fab whatsapp" href="https://wa.me/598095662193" target="_blank">
-    💬
+    📞
   </a>
 
 </div>
