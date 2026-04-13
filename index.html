@@ -1,9 +1,14 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/logo.png">
-  <title>Menú Cafetería</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">  <style>
+  <title>Menú Cafetería</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
     :root { --primary:#7FAFA8; --bg:#f7f7f7; --card:#fff; --accent:#F4BFA6; --text:#5A5A5A; }
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:Poppins,sans-serif;background:var(--bg);color:var(--text)}
@@ -22,9 +27,7 @@
       box-shadow:0 2px 10px rgba(0,0,0,0.15);
     }
 
-    .header.small{
-      padding:10px;
-    }
+    .header.small{ padding:10px; }
 
     .logo{
       width:80px;
@@ -62,38 +65,104 @@
     .desc{font-size:13px;color:#777;margin:5px 0}
     .price{color:var(--accent);font-weight:600}
 
+    /* BOTONES FLOTANTES */
+    .floating-buttons{
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+
+    .fab{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+    }
+
+    /* BOTÓN SUBIR */
+    .scroll-top{
+      background: linear-gradient(135deg, #7FAFA8, #6fa39c);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.9);
+    }
+
+    .scroll-top.show{
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    /* WHATSAPP */
     .whatsapp{
-      position:fixed;
-      bottom:20px;
-      right:20px;
       background-color: #25D366;
       color:white;
-      padding:15px;
-      border-radius:50%;
       font-size:20px;
       text-decoration:none;
-      box-shadow:0 4px 10px rgba(0,0,0,0.3);
     }
-  </style></head>
-<body><header class="header" id="header">
+
+    /* HOVER */
+    .fab:hover{
+      transform: translateY(-4px) scale(1.05);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header class="header" id="header">
   <img src="images/logo.png" alt="Dulce Beba" class="logo">
-</header><div class="container">  <div class="filters">
-  <button onclick="filterMenu('all')" class="active">🩵Todo</button>
+</header>
+
+<div class="container">
+
+  <div class="filters">
+    <button onclick="filterMenu('all')" class="active">🩵Todo</button>
     <button onclick="filterMenu('bebidas_calientes')">☕Bebidas calientes</button>
     <button onclick="filterMenu('bebidas_frias')">🍹Bebidas frías</button>
     <button onclick="filterMenu('dulces')">🍪Dulce</button>
- <button onclick="filterMenu('salados')">🥪Salado</button>
-<button onclick="filterMenu('tortas')">🍰Tortas</button>
-  <button onclick="filterMenu('postres')">🍮Postres</button>
-<button onclick="filterMenu('meriendas')">🧁Meriendas</button>
-<button onclick="filterMenu('eventos')">⭐Eventos</button>
-</div>  <div class="grid" id="menu"></div></div><a class="whatsapp" href="https://wa.me/598095662193" target="_blank">💬</a>
+    <button onclick="filterMenu('salados')">🥪Salado</button>
+    <button onclick="filterMenu('tortas')">🍰Tortas</button>
+    <button onclick="filterMenu('postres')">🍮Postres</button>
+    <button onclick="filterMenu('meriendas')">🧁Meriendas</button>
+    <button onclick="filterMenu('eventos')">⭐Eventos</button>
+  </div>
+
+  <div class="grid" id="menu"></div>
+</div>
+
+<!-- BOTONES FLOTANTES -->
+<div class="floating-buttons">
+
+  <!-- SUBIR -->
+  <button class="fab scroll-top" id="scrollTopBtn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path d="M6 14L12 8L18 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- WHATSAPP -->
+  <a class="fab whatsapp" href="https://wa.me/598095662193" target="_blank">
+    💬
+  </a>
+
+</div>
 
 <script>
 
-//const SHEET_URL = "PEGAR_URL_AQUI";
-//const SHEET_URL = "https://docs.google.com/spreadsheets/d/1l6JSlV5Lr-cE-OVh7eF6H0aFtGACmArcG6g9DqTddw8/export?format=csv";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Jlrqj7FGzviBaDj5UE15EPxPG0cqsNb8ihQ2rO3DUOFo69OioIroCADsJYXifA/pub?gid=350585094&single=true&output=csv"
+
 let data = [];
 
 async function loadData(){
@@ -101,7 +170,6 @@ async function loadData(){
     const res = await fetch(SHEET_URL);
     const text = await res.text();
 
-    //const rows = text.split("\n").slice(1);
     const rows = text.split("\r\n");
     data = rows.map(row => {
       const [id,name,description,price,img,cat] = row.split(",");
@@ -138,7 +206,7 @@ function filterMenu(cat){
   render(cat)
 }
 
-// Header shrink on scroll
+// Header dinámico
 window.addEventListener('scroll', () => {
   const header = document.getElementById('header');
   if(window.scrollY > 50){
@@ -148,7 +216,27 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// BOTÓN SUBIR
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 200) {
+    scrollTopBtn.classList.add("show");
+  } else {
+    scrollTopBtn.classList.remove("show");
+  }
+});
+
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
 loadData();
 
-</script></body>
+</script>
+
+</body>
 </html>
